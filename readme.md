@@ -12,6 +12,8 @@ $$
 
 MCTS的算法分为四步，**第一步是Selection**，就是在树中找到一个最好的值得探索的节点，一般策略是先选择未被探索的子节点，如果都探索过就选择UCB值最大的子节点。**第二步是Expansion**，就是在前面选中的子节点中走一步创建一个新的子节点，一般策略是随机自行一个操作并且这个操作不能与前面的子节点重复。**第三步是Simulation**，就是在前面新Expansion出来的节点开始模拟游戏，直到到达游戏结束状态，这样可以收到到这个expansion出来的节点的得分是多少。**第四步是Backpropagation**，就是把前面expansion出来的节点得分反馈到前面所有父节点中，更新这些节点的quality value和visit times，方便后面计算UCB值。
 
+简单来理解这个算法过程，在Simulation中，是模拟运行到最后一步，获取子节点的状态值可以用来计算UCB，**state在算法中是状态，并不是真的创建节点运行到这里**，然后backup更新值，然后每一步启动一次monte_carlo_tree_search来运行，找到最佳子节点。
+
 ![](https://github.com/ShawnZL/MCST/blob/master/picture/pic.png)
 
 # code

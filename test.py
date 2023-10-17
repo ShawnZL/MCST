@@ -150,7 +150,7 @@ def default_policy(node):
     current_state = node.get_state()
 
     # Run until the game over
-    while current_state.is_terminal() == False:
+    while current_state.is_terminal() == False: # 这一步我们只是获取接下来的状态，模拟运行到结尾，并不是真的去运行到最后
         # Pick one random action to play and get next state
         current_state = current_state.get_next_state_with_random_choice()
 
