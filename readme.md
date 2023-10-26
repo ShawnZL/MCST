@@ -14,7 +14,7 @@ MCTS的算法分为四步，**第一步是Selection**，就是在树中找到一
 
 简单来理解这个算法过程，在Simulation中，是模拟运行到最后一步，获取子节点的状态值可以用来计算UCB，**state在算法中是状态，并不是真的创建节点运行到这里**，然后backup更新值，然后每一步启动一次monte_carlo_tree_search来运行，找到最佳子节点。
 
-![](https://github.com/ShawnZL/MCST/blob/master/picture/pic.png)
+![](/Users/shawnzhao/Code/MCST/picture/pic.png)
 
 # code
 
