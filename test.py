@@ -132,7 +132,8 @@ def tree_policy(node):
     根据exploration/exploitation算法返回最好的需要expend的节点，注意如果节点是叶子结点直接返回。
     基本策略是先找当前未选择过的子节点，如果有多个则随机选。如果都选择过就找权衡过exploration/exploitation的UCB值最大的，如果UCB值相等则随机选。
     """
-    while node.get_state().is_terminal() == False:
+    while node.get_state().is_terminal():
+    # while node.get_state().is_terminal() == False:
         if node.is_all_expand(): # 所有节点都已经被搜索过
             node = best_child(node, True)
         else:
@@ -150,7 +151,8 @@ def default_policy(node):
     current_state = node.get_state()
 
     # Run until the game over
-    while current_state.is_terminal() == False: # 这一步我们只是获取接下来的状态，模拟运行到结尾，并不是真的去运行到最后
+    # while current_state.is_terminal() == False: # 这一步我们只是获取接下来的状态，模拟运行到结尾，并不是真的去运行到最后
+    while current_state.is_terminal():  # 这一步我们只是获取接下来的状态，模拟运行到结尾，并不是真的去运行到最后
         # Pick one random action to play and get next state
         current_state = current_state.get_next_state_with_random_choice()
 
@@ -174,7 +176,8 @@ def expand(node):
         ]
         no_used_action = [x for x in tried_sub_node_actions if x not in AVAILABLE_CHOICES]
         new_state = node.get_state().get_next_state_with_random_choice()
-        while new_state in tried_sub_node_states:
+        while new_state in tried_sub_node_states: # 目的是要确保 new_state 不在 tried_sub_node_states 中
+            # 通过条件成立不断的循环，直到条件不成立之后才可以退出循环
             action = random.choice([choice for choice in no_used_action])
             new_state = node.get_state().get_next_state_with_choice(action)# 这个地方是可以修改的，如果一直没有遍历到怎么办
         sub_node = Node()
@@ -212,9 +215,9 @@ def best_child(node, is_exploration):
 
     # Travel all sub nodes to find the best one
     for sub_node in node.get_children():
-        if is_exploration:
+        if is_exploration: # 表示都访问过了
             C = 1 / math.sqrt(2.0)
-        else:
+        else:  # 还没有完全过，所以sub_node_visit time可能为0
             C = 0.0
 
         # UCB = quality / times + C * sqrt(2 * ln(total_times) / times)
@@ -268,6 +271,7 @@ def monte_carlo_tree_search(node):
         backup(expand_node, reward)
 
     # N. Get the best next node
+    # 这里直接选择节点
     best_next_node = best_child(node, False)
 
     return best_next_node
